@@ -1,0 +1,131 @@
+---
+gitlab:
+  project:
+    path:
+      list: ""
+      item: "/{project}"
+    format:
+      list: "{id}: {name}"
+      item: "{id}: {name}, {web_url}"
+    fields:
+    - "id"
+    - "web_url"
+    - "name"
+  
+  pipeline:
+    format:
+      list: "{status:<8} {id}: {ref}"
+      item: "{status} {id}: {ref}"
+    path:
+      list: "/{project}/pipelines"
+      item: "/{project}/pipelines/{item_id}"
+      subitems: "/{project}/pipelines/{item_id}/jobs/"
+    fields:
+    - id
+    - status
+    - ref
+    - user
+    colors:
+      "failed": "red"
+      "success": "green"
+      "running": "yellow"
+      "pending": "white"
+      "canceled": "blue"
+    color_fields:
+    - "status"
+  
+  issue:
+    path:
+      list: "/{project}/issues"
+      item: "/{project}/issues/{item_id}"
+    format:
+      item: "{state} {iid}: {id}\n{title}, {web_url}\n{description}\nAssignee: {assignee}"
+      list: "{state} {iid}: {title}"
+    fields:
+    - "iid"
+    - "id"
+    - "state"
+    - "web_url"
+    - "description"
+    - "assignee"
+    - "title"
+    colors:
+      opened: "green"
+      closed: "red"
+    color_fields:
+    - "state"
+  
+  note:
+    path:
+      list: "/{project}/issues/{item_id}/notes"
+      item: "/{project}/issues/{item_id}/notes/{iitem_id}"
+    format:
+      list: "{body}"
+      item: "{body}"
+  
+    fields:
+    - "id"
+    - "body"
+    - "author"
+  
+  user:
+    path:
+      list: "/{project}/users"
+      item: "{state} {id}: {name}, {username}, {web_url} {avatar_url}"
+    format:
+      list: "{state} {id}: {name}, {username}"
+      item: "{state} {id}: {name}, {username}"
+    fields:
+    - "id"
+    - "name"
+    - "username"
+    - "state"
+    - "web_url"
+    - "avatar_url"
+    colors:
+      active: "green"
+      blocked: "red"
+    color_fields:
+    - "state"
+  
+  job:
+    path:
+      list: "/{project}/pipelines/{item_id}/jobs"
+      item: "/{project}/jobs/{item_id}"
+    format:
+      list: "{status} {id}: {state}, {name}, {stage}"
+      item: "{state} {id}: {name}, {stage}, {web_url} "
+    fields:
+    - id
+    - name
+    - status
+    - state
+    - stage
+    - web_url
+
+  trace:
+    path:
+      item: "/{project}/jobs/{item_id}/trace"
+    fields:
+    - "raw_data"
+
+  message:
+    format:
+      item: "{message}"
+      list: "{message}"
+    fields:
+    - "message"
+    - "kind"
+    colors:
+      error: "red"
+      warning: "red"
+      info: "green"
+    color_fields:
+    - "kind"
+  
+  todo:
+    path:
+      item: "/{project}/issues/{item_id}/todo"
+
+ui:
+  colors_enabled: true
