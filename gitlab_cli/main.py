@@ -36,20 +36,17 @@ def parse_args():
     return parser.parse_args()
 
 
-def show(item, inline=False):
-    print(item.display(inline=inline))
-
-
 def run(action, as_list=False, subitems=False, **kwargs):
-    request = Registry.get_class_for(action)
-    if not request:
+    klass = Registry.get_class_for(action)
+    if not klass:
         raise argparse.ArgumentTypeError("Undefined action {}", action)
     client = APIClient(config["client"])
-    data = client.get(request.get_path(as_list=as_list, subitems=subitems, **kwargs))
+    data = client.get(klass.get_path(as_list=as_list, subitems=subitems, **kwargs))
     if as_list or subitems:
-        [show(request(**item_data)) for item_data in data]
+        for item in data:
+            print(klass(**item).display())
     else:
-        show(request(**data))
+        print(klass(**data).display())
 
 
 def main():
