@@ -21,9 +21,10 @@ def load_config():
         print("Config file not found. A new one will be created")
         config = loadyaml("./gitlab_cli/config.yml")
         config["client"] = {
-            "server": input("Gitlab server:"),
-            "token": input("Token:"),
-            "api_version": "4"
+            "server": input("Gitlab server: "),
+            "token": input("Token: "),
+            "api_version": "4",
+            "default_project": input("Default project id: "),
         }
         update_config(configfile, config)
     return config

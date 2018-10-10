@@ -12,10 +12,11 @@ SPLITTER = MAX_WIDTH * "-"
 
 
 class ConfigMeta(type):
-  def __init__(cls, name, bases, d):
-      type.__init__(cls, name, bases, d)
-      if hasattr(cls, "_name"):
-          cls.config = AttrDict(config["gitlab"].get(cls._name, {}))
+    def __new__(cls, name, bases, dct):
+        obj = type.__new__(cls, name, bases, dct)
+        if hasattr(obj, "_name"):
+            obj.config = AttrDict(config["gitlab"].get(obj._name, {}))
+        return obj
 
 
 class Base(object, metaclass=ConfigMeta):
